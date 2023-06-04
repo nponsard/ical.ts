@@ -676,13 +676,13 @@ module.exports = {
 
     if (cb) {
       if (i < lines.length) {
-        setImmediate(() => {
+        setTimeout(() => {
           this.parseLines(lines, limit, ctx, stack, i + 1, cb);
-        });
+        }, 0);
       } else {
-        setImmediate(() => {
+        setTimeout(() => {
           cb(null, ctx);
-        });
+        }, 0);
       }
     } else {
       return ctx;

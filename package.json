@@ -1,6 +1,6 @@
 {
   "name": "@nponsard/ical",
-  "version": "0.16.3",
+  "version": "0.16.4",
   "main": "ical.js",
   "types": "ical.d.ts",
   "description": "Parsing iCalendar/ICS files in TypeScript, fork of node-ical",
