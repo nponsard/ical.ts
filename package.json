@@ -1,6 +1,6 @@
 {
   "name": "@nponsard/ical",
-  "version": "0.16.4",
+  "version": "0.16.5",
   "main": "ical.js",
   "types": "ical.d.ts",
   "description": "Parsing iCalendar/ICS files in TypeScript, fork of node-ical",
@@ -17,9 +17,7 @@
     "url": "git:///github.com/nponsard/ical.ts"
   },
   "dependencies": {
-    "axios": "1.3.4",
     "moment-timezone": "^0.5.31",
-    "rrule": "2.6.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

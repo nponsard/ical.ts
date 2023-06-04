@@ -2,7 +2,6 @@
 
 const {v4: uuid} = require('uuid');
 const moment = require('moment-timezone');
-const rrule = require('rrule').RRule;
 
 /** **************
  *  A tolerant, minimal icalendar parser
@@ -572,7 +571,7 @@ module.exports = {
 
         // Make sure to catch error from rrule.fromString()
         try {
-          curr.rrule = rrule.fromString(rule);
+          curr.rrule = rule;
         } catch (error) {
           throw error;
         }

@@ -1,4 +1,3 @@
-const axios = require('axios');
 const ical = require('./ical-parser.js');
 
 /**
@@ -83,47 +82,6 @@ const async = {};
 const autodetect = {};
 
 /**
- * Download an iCal file from the web and parse it.
- *
- * @param {string} url                - URL of file to request.
- * @param {Object|icsCallback} [opts] - Options to pass to axios.get() from npm:axios.
- *                                      Alternatively you can pass the callback function directly.
- *                                      If no callback is provided a promise will be returned.
- * @param {icsCallback} [cb]          - Callback function.
- *                                      If no callback is provided a promise will be returned.
- *
- * @returns {optionalPromise} Promise is returned if no callback is passed.
- */
-async.fromURL = function (url, options, cb) {
-  return promiseCallback((resolve, reject) => {
-    axios.get(url, options)
-      .then(response => {
-        // If (response.status !== 200) {
-        // all ok status codes should be accepted (any 2XX code)
-        if (Math.floor(response.status / 100) !== 2) {
-          reject(new Error(`${response.status} ${response.statusText}`));
-          return;
-        }
-
-        return response.data;
-      })
-      .then(data => {
-        ical.parseICS(data, (error, ics) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-
-          resolve(ics);
-        });
-      })
-      .catch(error => {
-        reject(error);
-      });
-  }, cb);
-};
-
-/**
  * Parse iCal data from a string.
  *
  * @param {string} data       - String containing iCal data.
@@ -154,23 +112,6 @@ async.parseICS = function (data, cb) {
  */
 sync.parseICS = function (data) {
   return ical.parseICS(data);
-};
-
-/**
- * Load iCal data from a file and parse it.
- *
- * @param {string} filename   - File path to load.
- * @param {icsCallback} [cb]  - Callback function.
- *                              If no callback is provided this function runs synchronously.
- *
- * @returns {iCalData|undefined} Parsed iCal data or undefined if a callback is being used.
- */
-autodetect.parseFile = function (filename, cb) {
-  if (!cb) {
-    return sync.parseFile(filename);
-  }
-
-  async.parseFile(filename, cb);
 };
 
 /**

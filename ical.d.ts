@@ -1,39 +1,22 @@
 declare module '@nponsard/ical' {
-  import {AxiosRequestConfig} from 'axios';
-  import {RRule} from 'rrule';
-
   /**
-     * Methods (Sync)
-     */
+   * Methods (Sync)
+   */
   export interface NodeICalSync {
     parseICS: (body: string) => CalendarResponse;
-
-    parseFile: (file: string) => CalendarResponse;
   }
 
   export const sync: NodeICalSync;
 
   /**
-     * Methods (Async)
-     */
+   * Methods (Async)
+   */
   export interface NodeICalAsync {
-    fromURL: ((url: string, callback: NodeIcalCallback) => void) & ((url: string, options: AxiosRequestConfig | NodeIcalCallback, callback?: NodeIcalCallback) => void) & ((url: string) => Promise<CalendarResponse>);
-
-    parseICS: ((body: string, callback: NodeIcalCallback) => void) & ((body: string) => Promise<CalendarResponse>);
-
-    parseFile: ((file: string, callback: NodeIcalCallback) => void) & ((file: string) => Promise<CalendarResponse>);
+    parseICS: ((body: string, callback: NodeIcalCallback) => void) &
+    ((body: string) => Promise<CalendarResponse>);
   }
 
   export const async: NodeICalAsync;
-
-  /**
-     * Methods (Autodetect)
-     */
-  export function fromURL(url: string, callback: NodeIcalCallback): void;
-
-  export function fromURL(url: string, options: AxiosRequestConfig | NodeIcalCallback, callback?: NodeIcalCallback): void;
-
-  export function fromURL(url: string): Promise<CalendarResponse>;
 
   export function parseICS(body: string, callback: NodeIcalCallback): void;
 
@@ -44,8 +27,8 @@ declare module '@nponsard/ical' {
   export function parseFile(file: string): CalendarResponse;
 
   /**
-     * Response objects
-     */
+   * Response objects
+   */
   export type NodeIcalCallback = (error: any, data: CalendarResponse) => void;
 
   export type CalendarResponse = Record<string, CalendarComponent>;
@@ -80,7 +63,7 @@ declare module '@nponsard/ical' {
     completion: string;
     created: DateWithTimeZone;
     lastmodified: DateWithTimeZone;
-    rrule?: RRule;
+    rrule?: string;
     attendee?: Attendee[] | Attendee;
     /* eslint-disable-next-line @typescript-eslint/ban-types */
     recurrences?: Record<string, Omit<VEvent, 'recurrences'>>;
@@ -136,7 +119,12 @@ declare module '@nponsard/ical' {
   export type Attendee = Property<{
     CUTYPE?: 'INDIVIDUAL' | 'UNKNOWN' | 'GROUP' | 'ROOM' | string;
     ROLE?: 'CHAIR' | 'REQ-PARTICIPANT' | 'NON-PARTICIPANT' | string;
-    PARTSTAT?: 'NEEDS-ACTION' | 'ACCEPTED' | 'DECLINED' | 'TENTATIVE' | 'DELEGATED';
+    PARTSTAT?:
+    | 'NEEDS-ACTION'
+    | 'ACCEPTED'
+    | 'DECLINED'
+    | 'TENTATIVE'
+    | 'DELEGATED';
     RSVP?: boolean;
     CN?: string;
     'X-NUM-GUESTS'?: number;
@@ -146,6 +134,14 @@ declare module '@nponsard/ical' {
   export type DateType = 'date-time' | 'date';
   export type Transparency = 'TRANSPARENT' | 'OPAQUE';
   export type Class = 'PUBLIC' | 'PRIVATE' | 'CONFIDENTIAL';
-  export type Method = 'PUBLISH' | 'REQUEST' | 'REPLY' | 'ADD' | 'CANCEL' | 'REFRESH' | 'COUNTER' | 'DECLINECOUNTER';
+  export type Method =
+    | 'PUBLISH'
+    | 'REQUEST'
+    | 'REPLY'
+    | 'ADD'
+    | 'CANCEL'
+    | 'REFRESH'
+    | 'COUNTER'
+    | 'DECLINECOUNTER';
   export type VEventStatus = 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
 }
