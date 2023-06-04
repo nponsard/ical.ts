@@ -1,4 +1,4 @@
-declare module 'ical' {
+declare module '@nponsard/ical' {
   import {AxiosRequestConfig} from 'axios';
   import {RRule} from 'rrule';
 
