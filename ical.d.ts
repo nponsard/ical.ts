@@ -1,4 +1,4 @@
-declare module 'node-ical' {
+declare module 'ical' {
   import {AxiosRequestConfig} from 'axios';
   import {RRule} from 'rrule';
 
