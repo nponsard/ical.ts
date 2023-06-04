@@ -100,19 +100,6 @@ const addTZ = function (dt, parameters) {
   return dt;
 };
 
-let zoneTable = null;
-function getIanaTZFromMS(msTZName) {
-  if (!zoneTable) {
-    const p = require('path');
-    zoneTable = require(p.join(__dirname, 'windowsZones.json'));
-  }
-
-  // Get hash entry
-  const he = zoneTable[msTZName];
-  // If found return iana name, else null
-  return he ? he.iana[0] : null;
-}
-
 function getTimeZone(value) {
   let tz = value;
   let found = '';
@@ -124,14 +111,6 @@ function getTimeZone(value) {
 
   // Remove quotes if found
   tz = tz.replace(/^"(.*)"$/, '$1');
-
-  // Watch out for windows timezones
-  if (tz && tz.includes(' ')) {
-    const tz1 = getIanaTZFromMS(tz);
-    if (tz1) {
-      tz = tz1;
-    }
-  }
 
   // Watch out for offset timezones
   // If the conversion above didn't find any matching IANA tz
@@ -227,16 +206,6 @@ const dateParameter = function (name) {
 
         // Remove quotes if found
         tz = tz.replace(/^"(.*)"$/, '$1');
-
-        // Watch out for windows timezones
-        if (tz && tz.includes(' ')) {
-          const tz1 = getIanaTZFromMS(tz);
-          if (tz1) {
-            tz = tz1;
-            // We have a confirmed timezone, don't use offset, may confuse DST/STD time
-            offset = '';
-          }
-        }
 
         // Watch out for offset timezones
         // If the conversion above didn't find any matching IANA tz
@@ -437,15 +406,15 @@ module.exports = {
             curr.end = moment.utc(curr.start).add(1, 'days').toDate(); // New Date(moment(curr.start).add(1, 'days'));
           } else {
             const durationUnits =
-              {
-                // Y: 'years',
-                // M: 'months',
-                W: 'weeks',
-                D: 'days',
-                H: 'hours',
-                M: 'minutes',
-                S: 'seconds'
-              };
+            {
+              // Y: 'years',
+              // M: 'months',
+              W: 'weeks',
+              D: 'days',
+              H: 'hours',
+              M: 'minutes',
+              S: 'seconds'
+            };
             // Get the list of duration elements
             const r = curr.duration.match(/-?\d+[YMWDHS]/g);
             let newend = moment.utc(curr.start);
